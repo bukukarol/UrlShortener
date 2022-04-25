@@ -23,6 +23,6 @@ public class UrlMappingRepository : IUrlMappingRepository
 
     public Task Insert(UrlMapping entity)
     {
-        return Task.FromResult(new Code("abcde"));
+        return Task.CompletedTask;
     }
 }

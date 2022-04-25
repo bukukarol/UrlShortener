@@ -1,4 +1,5 @@
-﻿using UrlShortener.Domain;
+﻿using Microsoft.AspNetCore.Mvc;
+using UrlShortener.Domain;
 
 namespace UrlShortener.API.Endpoints;
 
@@ -9,9 +10,10 @@ public static class RedirectEndpoints
         app.MapGet("/r/{code}", RedirectByCode);
     }
 
-    private static async Task<IResult> RedirectByCode(string code, IUrlMappingRepository repository)
+    private static async Task<IResult> RedirectByCode([FromRoute]string code, [FromServices] IUrlMappingRepository repository)
     {
         var urlMapping = await repository.GetByCode(new Code(code));
-        return Results.Redirect(urlMapping.Url.Value.ToString());
+        //TODO: Log information about redirection
+        return Results.Redirect(urlMapping.Url.Value);
     }
 }

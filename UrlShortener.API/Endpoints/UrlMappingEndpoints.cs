@@ -1,34 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UrlShortener.API.Services;
 using UrlShortener.Domain;
 
 namespace UrlShortener.API.Endpoints;
 
 public static class UrlMappingEndpoints
 {
-    
     public static void MapUrlMappingEndpoints(this WebApplication app)
     {
         app.MapPost("/url-mappings", MapUrl);
         app.MapGet("/url-mappings/all", GetAll);
     }
-
-    private static async Task<IResult> GetAll(IUrlMappingRepository repository)
+    public record UrlMappingResponseDto(string RedirectFromUrl, string RedirectToUrl);
+    private static async Task<IResult> GetAll(IUrlMappingRepository repository, IRedirectUrlService redirectUrlService)
     {
-        var result = await repository.GetAll();
-        //TODO map to proper route
+        var urlMappings = await repository.GetAll();
+        var result =  urlMappings.Select(x =>
+        {
+            var redirectFrom = redirectUrlService.GetRedirectUrlForCode(x.Code);
+            var redirectTo = x.Url.Value;
+            return new UrlMappingResponseDto(redirectFrom, redirectTo);
+        });
         return Results.Ok(result);
     }
-
-    public record UrlMappingDto(string Url);
-    private static async Task<IResult> MapUrl(UrlMappingDto dto, IUrlMappingRepository repository, ICodeGenerator codeGenerator)
+    
+    private static async Task<IResult> MapUrl([FromBody]UrlMappingRequestDto requestDto, IUrlMappingRepository repository, ICodeGenerator codeGenerator, IRedirectUrlService redirectUrlService)
     {
         var code = codeGenerator.GetCode();
-        var url = new Url(dto.Url);
+        var url = new Url(requestDto.Url);
         var entity = new UrlMapping(code, url);
         await repository.Insert(entity);
-        //TODO map to proper route
-        return Results.Ok(entity.Code.Value);
+        var redirectUrl = redirectUrlService.GetRedirectUrlForCode(code);
+        return Results.Ok(redirectUrl);
     }
-
+    public record UrlMappingRequestDto(string Url);
     
 }
