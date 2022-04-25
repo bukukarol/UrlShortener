@@ -20,7 +20,7 @@ public class Code : ValueObject
     {
         var regex = new Regex(@"^[a-zA-Z0-9]{5}$");
         if (!regex.Match(Value).Success)
-            throw new ArgumentException(Value);
+            throw new ArgumentException("Invalid format");
     }
     
     

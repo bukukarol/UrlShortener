@@ -15,7 +15,7 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-app.MapRedirectEndpoints();
+RedirectEndpoints.MapRedirectEndpoints(app);
 app.MapUrlMappingEndpoints();
 
 app.Run();

@@ -3,17 +3,18 @@ using UrlShortener.Domain;
 
 namespace UrlShortener.API.Endpoints;
 
-public static class RedirectEndpoints
+public class RedirectEndpoints
 {
-    public static void MapRedirectEndpoints(this WebApplication app)
+    public static void MapRedirectEndpoints(WebApplication app)
     {
         app.MapGet("/r/{code}", RedirectByCode);
     }
-
-    private static async Task<IResult> RedirectByCode([FromRoute]string code, [FromServices] IUrlMappingRepository repository)
+    //TODO: dirty fix of not easy way to use ILogger<> with a static class :/ to rethink 
+    private static async Task<IResult> RedirectByCode([FromRoute] string code, [FromServices] IUrlMappingRepository repository, [FromServices] ILogger<RedirectEndpoints> logger)
     {
         var urlMapping = await repository.GetByCode(new Code(code));
-        //TODO: Log information about redirection
+        var redirectTo = urlMapping.Url.Value;
+        logger.LogInformation($"Redirect to {redirectTo}");
         return Results.Redirect(urlMapping.Url.Value);
     }
 }
