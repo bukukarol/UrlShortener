@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using UrlShortener.API.Endpoints;
 using UrlShortener.API.Services;
 using UrlShortener.Data;
@@ -12,6 +13,11 @@ builder.Services.AddScoped<IRedirectUrlService, RedirectUrlService>();
 builder.Services.AddScoped<ICodeGenerator, CodeGenerator>();
 builder.Services.AddScoped<IUrlMappingRepository, UrlMappingRepository>();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddDbContext<UrlMappingDbContext>(options =>
+{
+    options.UseInMemoryDatabase(nameof(UrlMappingDbContext));
+});
 
 var app = builder.Build();
 

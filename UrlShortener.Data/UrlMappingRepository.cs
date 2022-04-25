@@ -1,28 +1,33 @@
-﻿using UrlShortener.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using UrlShortener.Domain;
 
 namespace UrlShortener.Data;
 
 public class UrlMappingRepository : IUrlMappingRepository
 {
-    public Task<IEnumerable<UrlMapping>> GetAll()
+    private readonly UrlMappingDbContext _dbContext;
+    public UrlMappingRepository(UrlMappingDbContext dbContext)
     {
-        var mockArray = new[]
-        {
-            new UrlMapping(new Code("abcde"), new Url("https://foo.com")),
-            new UrlMapping(new Code("abcdf"), new Url("https://foo.com")),
-            new UrlMapping(new Code("abcdg"), new Url("https://foo.com")),
-        }.AsEnumerable();
-            
-        return Task.FromResult(mockArray);
+        _dbContext = dbContext;
+    }
+    
+    public async Task<IEnumerable<UrlMapping>> GetAll()
+    {
+        var entities = await _dbContext.UrlMappings.ToListAsync();
+        return entities;
     }
 
-    public Task<UrlMapping> GetByCode(Code code)
+    public async Task<UrlMapping> GetByCode(Code code)
     {
-        return Task.FromResult(new UrlMapping(code, new Url("https://foo.com")));
+        var entity = await _dbContext.UrlMappings.SingleOrDefaultAsync(x => x.Code.Equals(code));
+        if (entity == null)
+            throw new ArgumentException("Not found");
+        return entity;
     }
 
-    public Task Insert(UrlMapping entity)
+    public async Task Insert(UrlMapping entity)
     {
-        return Task.CompletedTask;
+        _dbContext.Add(entity);
+        await _dbContext.SaveChangesAsync();
     }
 }

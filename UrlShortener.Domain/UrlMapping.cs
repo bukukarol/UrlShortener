@@ -2,8 +2,11 @@
 
 public class UrlMapping
 {
-    public Code Code { get;  }  
-    public Url Url { get;  } 
+    public int Id { get;  }
+    public Code Code { get; }  
+    public Url Url { get; }
+
+    private UrlMapping(){}
 
     public UrlMapping(Code code,Url url)
     {
