@@ -9,7 +9,7 @@
 - `GET /url-mappings` - query all available url mappings
 - `GET /r/{string}` - redirect to mapped url
 
-##Key assumptions 
+## Key assumptions 
  - We are trying to protect redirect endpoint before guessing correct shortened url code
  - Solution is design to handle limited ammount of url mapping data.
 Limitation is code used to create shortened urls.
