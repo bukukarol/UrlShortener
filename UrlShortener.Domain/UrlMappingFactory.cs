@@ -10,11 +10,13 @@ public class UrlMappingFactory : IUrlMappingFactory
     private readonly IUrlMappingRepository _repository;
     private readonly ICodeGenerator _codeGenerator;
     private const int CodeGenerationCircuitBreakerThreshold = 100;
+    
     public UrlMappingFactory(IUrlMappingRepository repository, ICodeGenerator codeGenerator)
     {
         _repository = repository;
         _codeGenerator = codeGenerator;
     }
+    
     public async Task<UrlMapping> Create(Url url)
     {
         Code code;
@@ -26,7 +28,16 @@ public class UrlMappingFactory : IUrlMappingFactory
             codeAlreadyUsed = await _repository.EntityWithCodeExists(code);
             loopNr++;
         } while (codeAlreadyUsed && loopNr< CodeGenerationCircuitBreakerThreshold);
-        if (codeAlreadyUsed) throw new Exception("Could not generate unique code for UrlMapping entity");
+        if (codeAlreadyUsed) throw new UrlMappingFactoryCannotGenerateUniqueEntity();
         return new UrlMapping(code, url);
+    }
+
+    public class UrlMappingFactoryCannotGenerateUniqueEntity : Exception
+    {
+        public UrlMappingFactoryCannotGenerateUniqueEntity() : base(
+            "Could not generate unique code for UrlMapping entity")
+        {
+        }
+
     }
 }
