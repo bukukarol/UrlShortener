@@ -23,6 +23,7 @@ Some numbers, chance of duplicate code during generation:
 
 ## Future Ideas
 - Threshold of hardness for guess a valid redirect url  
+- Smart extandable code lenght depend on multiple factors  
 - Use transaction to check and insert
 - Create separate web service for handle only redirection requests ( we can then only handle url mapping codes without `/r/`)
 - use SwaggerUI for better experience 
