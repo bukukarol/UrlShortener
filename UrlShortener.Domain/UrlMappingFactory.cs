@@ -26,7 +26,7 @@ public class UrlMappingFactory : IUrlMappingFactory
             codeAlreadyUsed = await _repository.EntityWithCodeExists(code);
             loopNr++;
         } while (codeAlreadyUsed && loopNr< CodeGenerationCircuitBreakerThreshold);
-        if (codeAlreadyUsed) throw new Exception("Could not generate unique code for mapping");
+        if (codeAlreadyUsed) throw new Exception("Could not generate unique code for UrlMapping entity");
         return new UrlMapping(code, url);
     }
 }

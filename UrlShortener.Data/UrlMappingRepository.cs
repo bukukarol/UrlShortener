@@ -19,7 +19,7 @@ public class UrlMappingRepository : IUrlMappingRepository
 
     public async Task<UrlMapping> GetByCode(Code code)
     {
-        var entity = await _dbContext.UrlMappings.SingleOrDefaultAsync(x => x.Code.Equals(code));
+        var entity = await _dbContext.UrlMappings.SingleOrDefaultAsync(x => x.Code.Value == code.Value);
         if (entity == null)
             throw new ArgumentException("Not found");
         return entity;
@@ -27,7 +27,7 @@ public class UrlMappingRepository : IUrlMappingRepository
 
     public async Task<bool> EntityWithCodeExists(Code code)
     {
-        return await _dbContext.UrlMappings.AnyAsync(x => Equals(x.Code, code));
+        return await _dbContext.UrlMappings.AnyAsync(x => x.Code.Value == code.Value);
     }
 
     public async Task Insert(UrlMapping entity)
