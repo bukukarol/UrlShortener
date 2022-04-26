@@ -22,8 +22,8 @@ Some numbers, chance of duplicate code during generation:
  - Overall concept of this design is to adjust length of code to fits needed capacity
 
 ## Future Ideas
-- Threshold of hardness for guess a valid redirect url  
-- Smart extandable code lenght depend on multiple factors  
+- Threshold of difficulty for guess a valid redirect url  
+- Extendable code length, depend on capacity / difficulty of generate new one / uniqueness threshold
 - Use transaction to check and insert
 - Create separate web service for handle only redirection requests ( we can then only handle url mapping codes without `/r/`)
 - use SwaggerUI for better experience 
