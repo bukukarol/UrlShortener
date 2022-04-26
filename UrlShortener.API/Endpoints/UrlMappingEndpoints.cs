@@ -9,7 +9,7 @@ public static class UrlMappingEndpoints
     public static void MapUrlMappingEndpoints(this WebApplication app)
     {
         app.MapPost("/url-mappings", MapUrl);
-        app.MapGet("/url-mappings/all", GetAll);
+        app.MapGet("/url-mappings", GetAll);
     }
     public record UrlMappingResponseDto(string RedirectFromUrl, string RedirectToUrl);
     private static async Task<IResult> GetAll(IUrlMappingRepository repository, IRedirectUrlService redirectUrlService)
@@ -32,6 +32,7 @@ public static class UrlMappingEndpoints
         var redirectUrl = redirectUrlService.GetRedirectUrlForCode(entity.Code);
         return Results.Ok(redirectUrl);
     }
+    
     public record UrlMappingRequestDto(string Url);
     
 }
