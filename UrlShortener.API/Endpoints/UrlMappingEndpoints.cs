@@ -24,13 +24,12 @@ public static class UrlMappingEndpoints
         return Results.Ok(result);
     }
     
-    private static async Task<IResult> MapUrl([FromBody]UrlMappingRequestDto requestDto, IUrlMappingRepository repository, ICodeGenerator codeGenerator, IRedirectUrlService redirectUrlService)
+    private static async Task<IResult> MapUrl([FromBody]UrlMappingRequestDto requestDto, IUrlMappingRepository repository, IUrlMappingFactory urlMappingFactory, IRedirectUrlService redirectUrlService)
     {
-        var code = codeGenerator.GetCode();
         var url = new Url(requestDto.Url);
-        var entity = new UrlMapping(code, url);
+        var entity = await urlMappingFactory.Create(url);
         await repository.Insert(entity);
-        var redirectUrl = redirectUrlService.GetRedirectUrlForCode(code);
+        var redirectUrl = redirectUrlService.GetRedirectUrlForCode(entity.Code);
         return Results.Ok(redirectUrl);
     }
     public record UrlMappingRequestDto(string Url);

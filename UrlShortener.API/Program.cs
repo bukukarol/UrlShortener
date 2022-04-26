@@ -12,6 +12,7 @@ builder.Logging.AddConsole();
 builder.Services.AddScoped<IRedirectUrlService, RedirectUrlService>();
 builder.Services.AddScoped<ICodeGenerator, CodeGenerator>();
 builder.Services.AddScoped<IUrlMappingRepository, UrlMappingRepository>();
+builder.Services.AddScoped<IUrlMappingFactory, UrlMappingFactory>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<UrlMappingDbContext>(options =>

@@ -25,6 +25,11 @@ public class UrlMappingRepository : IUrlMappingRepository
         return entity;
     }
 
+    public async Task<bool> EntityWithCodeExists(Code code)
+    {
+        return await _dbContext.UrlMappings.AnyAsync(x => Equals(x.Code, code));
+    }
+
     public async Task Insert(UrlMapping entity)
     {
         _dbContext.Add(entity);
