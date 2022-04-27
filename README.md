@@ -11,8 +11,8 @@
 
 ## Key assumptions 
  - We are trying to protect redirect endpoint before guessing correct shortened url code
- - Solution is design to handle limited ammount of url mapping data.
-Limitation is code used to create shortened urls.
+ - Design got limitation for ammount of url mapping data.
+Limitation is a code used to create shortened urls.
 Code is randomly build out of alphabet containing 62 characters `a-z A-Z 0-9` with length of 5.
 Theoretically we could have up to `62^5 = 916 132 832` unique codes,
 but because fact that we each time generate code randomly, at some point chance of that we will generate unique code will drastically drop.  
