@@ -22,6 +22,7 @@ Some numbers, chance of duplicate code during generation:
  - Overall concept of this design is to adjust length of code to fits needed capacity
 
 ## Future Ideas
+- Instead of trying each time to generate code, we could generate all possible variations, randomize it, and then just pick one by one. Still we need to consider birthday problem but whole process could be easier
 - Threshold of difficulty for guess a valid redirect url  
 - Extendable code length, depend on capacity / difficulty of generate new one / uniqueness threshold
 - Use transaction to check and insert
